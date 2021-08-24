@@ -1,0 +1,39 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.datasource.connection.listener</groupId>
+	<artifactId>connection-listener</artifactId>
+	<version>1.0</version>
+	<name>Client Identifier</name>
+	<description>Logar o nome de usuário no Apache access.log</description>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<!-- maven-compiler-plugin -->
+		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<version.org.jboss.spec.jboss.javaee8>1.0.1.Final-redhat-00001</version.org.jboss.spec.jboss.javaee8>
+		<version.jboss-eap-javaee8-with-tools>7.2.0.GA</version.jboss-eap-javaee8-with-tools>
+	</properties>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency><groupId>org.jboss.spec</groupId><artifactId>jboss-javaee-8.0</artifactId><version>${version.org.jboss.spec.jboss.javaee8}</version><type>pom</type><scope>import</scope></dependency>
+			<dependency><groupId>org.jboss.bom</groupId><artifactId>jboss-eap-javaee8-with-tools</artifactId><version>${version.jboss-eap-javaee8-with-tools}</version><type>pom</type><scope>import</scope></dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<dependencies>
+		<dependency><groupId>org.jboss.ironjacamar</groupId><artifactId>ironjacamar-jdbc</artifactId><version>1.4.11.Final-redhat-00001</version><scope>provided</scope></dependency>
+		<dependency><groupId>org.jboss.logging</groupId><artifactId>jboss-logging</artifactId><scope>provided</scope></dependency>
+		<dependency><groupId>org.jboss.spec.javax.ejb</groupId><artifactId>jboss-ejb-api_3.2_spec</artifactId><scope>provided</scope></dependency>
+
+	</dependencies>
+
+	<build>
+		<resources>
+			<resource><directory>src/main/resources</directory><filtering>true</filtering><includes><include>**/*.xml</include><include>**/*.properties</include></includes></resource>
+			<resource><directory>src/main/resources</directory><filtering>false</filtering><excludes><exclude>**/*.xml</exclude><exclude>**/*.properties</exclude></excludes></resource>
+		</resources>
+	</build>
+</project>
