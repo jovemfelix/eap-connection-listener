@@ -1,40 +1,162 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.datasource.connection.listener</groupId>
-	<artifactId>connection-listener</artifactId>
-	<version>1.0</version>
-	<name>Client Identifier</name>
-	<description>Logar o nome de usuário no Apache access.log</description>
+<?xml version="1.0" encoding="UTF-8"?>
 
-	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<!-- maven-compiler-plugin -->
-		<maven.compiler.target>1.8</maven.compiler.target>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<version.org.jboss.spec.jboss.javaee8>1.0.1.Final-redhat-00001</version.org.jboss.spec.jboss.javaee8>
-		<version.jboss-eap-javaee8-with-tools>7.2.0.GA</version.jboss-eap-javaee8-with-tools>
-	</properties>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
 
-	<dependencyManagement>
-		<dependencies>
-			<dependency><groupId>org.jboss.spec</groupId><artifactId>jboss-javaee-8.0</artifactId><version>${version.org.jboss.spec.jboss.javaee8}</version><type>pom</type><scope>import</scope></dependency>
-			<dependency><groupId>org.jboss.bom</groupId><artifactId>jboss-eap-javaee8-with-tools</artifactId><version>${version.jboss-eap-javaee8-with-tools}</version><type>pom</type><scope>import</scope></dependency>
-		</dependencies>
-	</dependencyManagement>
+    <groupId>br.com.parent</groupId>
+    <artifactId>client-info-parent</artifactId>
+    <version>1.0</version>
 
-	<dependencies>
-		<dependency><groupId>org.jboss.ironjacamar</groupId><artifactId>ironjacamar-jdbc</artifactId><version>1.4.11.Final-redhat-00001</version><scope>provided</scope></dependency>
-		<dependency><groupId>org.jboss.logging</groupId><artifactId>jboss-logging</artifactId><scope>provided</scope></dependency>
-		<dependency><groupId>org.jboss.spec.javax.ejb</groupId><artifactId>jboss-ejb-api_3.2_spec</artifactId><scope>provided</scope></dependency>
-		<dependency><groupId>org.jboss.spec.javax.servlet</groupId><artifactId>jboss-servlet-api_4.0_spec</artifactId><scope>provided</scope></dependency>
-		<dependency><groupId>org.jboss.spec.javax.ws.rs</groupId><artifactId>jboss-jaxrs-api_2.1_spec</artifactId><scope>provided</scope></dependency>
-	</dependencies>
+    <packaging>pom</packaging>
 
-	<build>
-		<resources>
-			<resource><directory>src/main/resources</directory><filtering>true</filtering><includes><include>**/*.xml</include><include>**/*.properties</include></includes></resource>
-			<resource><directory>src/main/resources</directory><filtering>false</filtering><excludes><exclude>**/*.xml</exclude><exclude>**/*.properties</exclude></excludes></resource>
-		</resources>
-	</build>
+    <name>Client Info: Parent</name>
+    <description>Quickstart's parent</description>
+    <url>http://www.jboss.org/jdf/quickstarts/get-started/</url>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>http://www.apache.org/licenses/LICENSE-2.0.html</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <version.compiler.plugin>3.1</version.compiler.plugin>
+        <version.war.plugin>2.1.1</version.war.plugin>
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+
+        <version.server.bom>7.2.0.GA</version.server.bom>
+        <version.jboss-eap-javaee8-with-tools>7.2.0.GA</version.jboss-eap-javaee8-with-tools>
+        <version.org.jboss.spec.jboss.javaee8>1.0.1.Final-redhat-00001</version.org.jboss.spec.jboss.javaee8>
+        <version.ejb.client>${project.version}</version.ejb.client>
+        <skip.wildfly>true</skip.wildfly>
+        <version.exec.plugin>3.0.0</version.exec.plugin>
+    </properties>
+
+    <modules>
+        <module>connection-listener</module>
+        <module>interceptor-ejb</module>
+        <module>interceptor-ear</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency><groupId>org.jboss.eap</groupId><artifactId>wildfly-ejb-client-bom</artifactId><version>${version.server.bom}</version><type>pom</type></dependency>
+            <dependency><groupId>org.jboss.bom</groupId><artifactId>jboss-eap-javaee8-with-tools</artifactId><version>${version.server.bom}</version><type>pom</type><scope>import</scope></dependency>
+            <dependency><groupId>org.jboss.spec</groupId><artifactId>jboss-javaee-8.0</artifactId><version>${version.org.jboss.spec.jboss.javaee8}</version><type>pom</type><scope>import</scope></dependency>
+
+            <dependency><groupId>org.jboss.ironjacamar</groupId><artifactId>ironjacamar-jdbc</artifactId><version>1.4.11.Final-redhat-00001</version><scope>provided</scope></dependency>
+            <dependency><groupId>br.com.server</groupId><artifactId>interceptor-ejb</artifactId><version>${version.ejb.client}</version><type>ejb-client</type></dependency>
+            <dependency><groupId>br.com.server</groupId><artifactId>interceptor-ejb</artifactId><version>${version.ejb.client}</version><type>ejb</type><scope>provided</scope></dependency>
+        </dependencies>
+    </dependencyManagement>
+
+    <!-- Activate the JBoss Enterprise Maven Repository.
+
+        NOTE: Configuring the Maven repository in the pom.xml file is not a recommended procedure
+        and is only done here to make it easier to use the quickstarts.
+
+        For more information about how to configure Maven for your application,
+        see the section entitled 'Use the Maven Repository'
+        in the Development Guide for Red Hat JBoss Enterprise Application Platform located here:
+
+        https://access.redhat.com/documentation/en/red-hat-jboss-enterprise-application-platform/
+    -->
+    <repositories>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>jboss-enterprise-maven-repository</id>
+            <url>https://maven.repository.redhat.com/ga/</url>
+        </repository>
+        <repository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>jboss-enterprise-maven-repository-ea</id>
+            <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
+        </repository>
+        <repository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </repository>
+    </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>jboss-enterprise-maven-repository</id>
+            <url>https://maven.repository.redhat.com/ga/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+            <id>jboss-enterprise-maven-repository-ea</id>
+            <url>https://maven.repository.redhat.com/earlyaccess/all/</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>jboss-public-repository-group</id>
+            <name>JBoss Public Maven Repository Group</name>
+            <url>https://repository.jboss.org/nexus/content/groups/public/</url>
+            <layout>default</layout>
+            <releases>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+                <updatePolicy>never</updatePolicy>
+            </snapshots>
+        </pluginRepository>
+    </pluginRepositories>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.wildfly.plugins</groupId>
+                <artifactId>wildfly-maven-plugin</artifactId>
+                <configuration>
+                    <skip>${skip.wildfly}</skip>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
 </project>

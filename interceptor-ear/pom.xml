@@ -1,0 +1,48 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>br.com.server</groupId>
+
+    <artifactId>interceptor-ear</artifactId>
+    <packaging>ear</packaging>
+    <name>EAR</name>
+    <version>1.0</version>
+
+    <properties>
+        <skip.wildfly>false</skip.wildfly>
+    </properties>
+
+    <parent>
+        <groupId>br.com.parent</groupId>
+        <artifactId>client-info-parent</artifactId>
+        <version>1.0</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <dependencies>
+        <dependency><groupId>br.com.server</groupId><artifactId>interceptor-ejb</artifactId><type>ejb</type></dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-ear-plugin</artifactId>
+                <version>2.10</version>
+                <configuration>
+                    <modules>
+                        <ejbModule>
+                            <groupId>br.com.server</groupId>
+                            <artifactId>interceptor-ejb</artifactId>
+                        </ejbModule>
+                    </modules>
+                    <defaultLibBundleDir>/lib</defaultLibBundleDir>
+                    <archive>
+                        <manifest>
+                            <addClasspath>true</addClasspath>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
