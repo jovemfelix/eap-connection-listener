@@ -9,5 +9,6 @@
         <module name="javax.transaction.api"/>
         <module name="org.jboss.ironjacamar.jdbcadapters"/>
         <module name="org.jboss.logging"/>
+        <module name="org.wildfly.security.elytron-private
     </dependencies>
 </module>
