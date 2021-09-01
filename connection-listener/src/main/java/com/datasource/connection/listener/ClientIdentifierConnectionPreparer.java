@@ -2,11 +2,13 @@ package com.datasource.connection.listener;
 
 import org.jboss.jca.adapters.jdbc.spi.listener.ConnectionListener;
 import org.jboss.logging.Logger;
+import org.wildfly.security.auth.server.SecurityDomain;
 
 import javax.annotation.Resource;
 import javax.ejb.SessionContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.core.Context;
+import java.security.Principal;
 import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -17,33 +19,25 @@ import java.sql.SQLException;
 public class ClientIdentifierConnectionPreparer implements ConnectionListener {
     private static final Logger logger = Logger.getLogger(ClientIdentifierConnectionPreparer.class);
 
-    @Resource
-    private SessionContext sessionContext;
-
-    @Context
-    private HttpServletRequest httpRequest;
 
     private String prepSql = "{ call DBMS_SESSION.SET_IDENTIFIER(?) }";
 
     @Override
     public void initialize(ClassLoader classLoader) {
         logger.info("[initialize] classLoader=" + classLoader);
-        logger.info("[initialize] sessionContext=" + sessionContext);
-        logger.info("[initialize] httpRequest=" + httpRequest);
+        logger.info("[initialize] principal=" + getUserId());
     }
 
     @Override
     public void activated(Connection connection) throws SQLException {
         logger.info("[activated] connection=" + connection);
-        logger.info("[activated] sessionContext=" + sessionContext);
-        logger.info("[activated] httpRequest=" + httpRequest);
+        logger.info("[activated] principal=" + getUserId());
     }
 
     @Override
     public void passivated(Connection connection) throws SQLException {
         logger.info("[passivated] connection=" + connection);
-        logger.info("[passivated] sessionContext=" + sessionContext);
-        logger.info("[passivated] httpRequest=" + httpRequest);
+        logger.info("[passivated] principal=" + getUserId());
     }
 
     protected Connection setClientIdentifier(Connection connection) throws SQLException {
@@ -58,7 +52,19 @@ public class ClientIdentifierConnectionPreparer implements ConnectionListener {
     }
 
     protected String getUserId() {
-        return null;
+        String userId = null;
+        logger.info("[getUserId] SecurityDomain.getCurrent=" + SecurityDomain.getCurrent());
+        if (SecurityDomain.getCurrent() != null) {
+            logger.info("[getUserId] SecurityDomain.getCurrent().getCurrentSecurityIdentity=" + SecurityDomain.getCurrent().getCurrentSecurityIdentity());
+            if (SecurityDomain.getCurrent().getCurrentSecurityIdentity() != null) {
+                logger.info("[getUserId] SecurityDomain.getCurrent().getCurrentSecurityIdentity().getPrincipal=" + SecurityDomain.getCurrent().getCurrentSecurityIdentity().getPrincipal());
+                if (SecurityDomain.getCurrent().getCurrentSecurityIdentity().getPrincipal() != null) {
+                    userId = SecurityDomain.getCurrent().getCurrentSecurityIdentity().getPrincipal().getName();
+                }
+            }
+        }
+
+        return userId;
     }
 
 }
