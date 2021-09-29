@@ -24,20 +24,20 @@ public class ClientIdentifierConnectionPreparer implements ConnectionListener {
 
     @Override
     public void initialize(ClassLoader classLoader) {
-        logger.info("[initialize] classLoader=" + classLoader);
-        logger.info("[initialize] principal=" + getUserId());
+//        logger.info("[initialize] classLoader=" + classLoader);
+//        logger.info("[initialize] principal=" + getUserId());
     }
 
     @Override
     public void activated(Connection connection) throws SQLException {
-        logger.info("[activated] connection=" + connection);
-        logger.info("[activated] principal=" + getUserId());
+//        logger.info("[activated] connection=" + connection);
+//        logger.info("[activated] principal=" + getUserId());
     }
 
     @Override
     public void passivated(Connection connection) throws SQLException {
-        logger.info("[passivated] connection=" + connection);
-        logger.info("[passivated] principal=" + getUserId());
+//        logger.info("[passivated] connection=" + connection);
+//        logger.info("[passivated] principal=" + getUserId());
     }
 
     protected Connection setClientIdentifier(Connection connection) throws SQLException {
